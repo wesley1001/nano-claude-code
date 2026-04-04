@@ -300,6 +300,26 @@ def cmd_save(args: str, state, _config) -> bool:
     ok(f"Session saved to {path}")
     return True
 
+def cmd_save_2(args: str, state, _config) -> bool:
+    from config import MR_SESSIONS_DIR
+    fname = args.strip() or "nigga.json"
+    path = Path(fname) if "/" in fname else MR_SESSIONS_DIR / fname
+    data = {
+        "messages": [
+            m if not isinstance(m.get("content"), list) else
+            {**m, "content": [
+                b if isinstance(b, dict) else b.model_dump()
+                for b in m["content"]
+            ]}
+            for m in state.messages
+        ],
+        "turn_count": state.turn_count,
+        "total_input_tokens": state.total_input_tokens,
+        "total_output_tokens": state.total_output_tokens,
+    }
+    path.write_text(json.dumps(data, indent=2, default=str))
+    ok(f"Session saved to {path}")
+    return True
 def cmd_load(args: str, state, _config) -> bool:
     from config import SESSIONS_DIR
     if not args.strip():
@@ -323,6 +343,11 @@ def cmd_load(args: str, state, _config) -> bool:
     state.total_input_tokens = data.get("total_input_tokens", 0)
     state.total_output_tokens = data.get("total_output_tokens", 0)
     ok(f"Session loaded from {path} ({len(state.messages)} messages)")
+    return True
+
+def cmd_resume(args: str, state, _config) -> bool:
+    from config import MR_SESSION_DIR
+  
     return True
 
 def cmd_history(_args: str, state, _config) -> bool:
@@ -417,6 +442,7 @@ def cmd_cwd(args: str, _state, _config) -> bool:
 
 def cmd_exit(_args: str, _state, _config) -> bool:
     ok("Goodbye!")
+    cmd_save_2("", _state, _config)  # auto-save to mr_sessions for easy resuming
     sys.exit(0)
 
 def cmd_memory(args: str, _state, _config) -> bool:
@@ -977,6 +1003,7 @@ COMMANDS = {
     "voice":       cmd_voice,
     "exit":        cmd_exit,
     "quit":        cmd_exit,
+    "resume":      cmd_resume
 }
 
 
