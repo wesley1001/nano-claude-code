@@ -254,7 +254,7 @@ Claude Code is a powerful, production-grade AI coding assistant — but its sour
 
 > **Note:** Tool calling requires a model that supports function calling. Recommended local models: `qwen2.5-coder`, `llama3.3`, `mistral`, `phi4`.
 
-> **Reasoning models:** `deepseek-r1`, `qwen3`, and `gemma4` stream native `<think>` blocks. Enable with `/verbose` and `/thinking` to see thoughts in the terminal. Note: models fed a large system prompt (like nano-claude's 25 tool schemas) may suppress their thinking phase to avoid breaking the expected JSON format — this is model behavior, not a bug.
+> **Reasoning models:** `deepseek-r1:latest`, `qwen3:latest`, and `gemma4:latest` stream native `<think>` blocks. Enable with `/verbose` and `/thinking` to see thoughts in the terminal. Note: models fed a large system prompt (like nano-claude's 25 tool schemas) may suppress their thinking phase to avoid breaking the expected JSON format — this is model behavior, not a bug.
 
 ---
 
@@ -446,9 +446,9 @@ ollama serve     # starts on http://localhost:11434
 **Step 4: Run nano claude**
 
 ```bash
-nano_claude --model ollama/qwen2.5-coder
-nano_claude --model ollama/llama3.3
-nano_claude --model ollama/deepseek-r1
+nano_claude --model ollama/qwen2.5-coder:latest
+nano_claude --model ollama/llama3.3:latest
+nano_claude --model ollama/deepseek-r1:latest
 ```
 
 **List your locally available models:**

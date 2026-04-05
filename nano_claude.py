@@ -317,8 +317,17 @@ def cmd_model(args: str, _state, config) -> bool:
             left, right = m.split(":", 1)
             if left in PROVIDERS:
                 m = f"{left}/{right}"
-        config["model"] = m
         pname = detect_provider(m)
+        # Ollama auto-tagging: append :latest if missing a colon
+        if pname == "ollama":
+            if "/" in m:
+                prov, mod = m.split("/", 1)
+                if ":" not in mod:
+                    m = f"{prov}/{mod}:latest"
+            elif ":" not in m:
+                m = f"{m}:latest"
+
+        config["model"] = m
         ok(f"Model set to {m}  (provider: {pname})")
         from config import save_config
         save_config(config)
