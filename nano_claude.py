@@ -289,25 +289,33 @@ def cmd_help(_args: str, _state, _config) -> bool:
     return True
 
 def cmd_model(args: str, _state, config) -> bool:
-    from providers import detect_provider, PROVIDERS
-    m = args.strip().replace(":", "/", 1)
-    if not m:
-        pname = detect_provider(config["model"])
-        curr  = clr(config["model"], "green", "bold")
-        print(f"Current model: {curr} (provider: {pname})")
-        print(clr("\nPredefined models (use /model <name>):", "dim"))
-        for p, d in PROVIDERS.items():
-            mods = ", ".join(d.get("models", []))
-            if mods:
-                print(f"  {clr(p+':', 'yellow'):12s} {mods}")
-        return True
-
-    pname = detect_provider(m)
-
-    config["model"] = m
-    from config import save_config
-    save_config(config)
-    ok(f"Model set to {clr(m, 'bold')}  (provider: {pname})")
+    from providers import PROVIDERS, detect_provider
+    if not args:
+        model = config["model"]
+        pname = detect_provider(model)
+        info(f"Current model:    {model}  (provider: {pname})")
+        info("\nAvailable models by provider:")
+        for pn, pdata in PROVIDERS.items():
+            ms = pdata.get("models", [])
+            if ms:
+                info(f"  {pn:12s}  " + ", ".join(ms[:4]) + ("..." if len(ms) > 4 else ""))
+        info("\nFormat: 'provider/model' or just model name (auto-detected)")
+        info("  e.g. /model gpt-4o")
+        info("  e.g. /model ollama/qwen2.5-coder")
+        info("  e.g. /model kimi:moonshot-v1-32k")
+    else:
+        # Accept both "ollama/model" and "ollama:model" syntax
+        # Only treat ':' as provider separator if left side is a known provider
+        m = args.strip()
+        if "/" not in m and ":" in m:
+            left, right = m.split(":", 1)
+            if left in PROVIDERS:
+                m = f"{left}/{right}"
+        config["model"] = m
+        pname = detect_provider(m)
+        ok(f"Model set to {m}  (provider: {pname})")
+        from config import save_config
+        save_config(config)
     return True
 
 def _interactive_ollama_picker(config: dict) -> bool:
@@ -447,9 +455,8 @@ INSTRUCTIONS:
         user_msg = f"PRIOR IDEAS FROM DEBATE:\n{history or 'No previous ideas yet. You are the first to speak.'}"
         
         full_response = []
-        # Internal calls should not stream to stdout or include tools
+        # Internal calls should not include tools (tool_schemas already passed as [])
         internal_config = config.copy()
-        internal_config["stream"] = False
         internal_config["no_tools"] = True
         
         try:
@@ -1928,6 +1935,8 @@ def repl(config: dict, initial_prompt: str = None):
                             if state.messages and state.messages[-1]["role"] == "user":
                                 state.messages.pop()
                             return run_query(user_input, is_background)
+                        # User cancelled picker — abort gracefully without crashing
+                        return
                 raise e
 
             flush_response()  # stop Live, commit any remaining text

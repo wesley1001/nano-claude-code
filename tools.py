@@ -397,27 +397,29 @@ def _edit(file_path: str, old_string: str, new_string: str, replace_all: bool = 
         # Read with newline="" to get original line endings
         content = p.read_text(encoding="utf-8", errors="replace", newline="")
         
-        # Detect original line endings to preserve them after edit
-        is_crlf = "\r\n" in content
-        
+        # Detect original line endings: only treat as pure CRLF if every \n is part of \r\n
+        crlf_count = content.count("\r\n")
+        lf_count = content.count("\n")
+        is_pure_crlf = crlf_count > 0 and crlf_count == lf_count
+
         # Normalize line endings to avoid \r\n vs \n mismatch during matching
         content_norm = content.replace("\r\n", "\n")
         old_norm = old_string.replace("\r\n", "\n")
         new_norm = new_string.replace("\r\n", "\n")
-        
+
         count = content_norm.count(old_norm)
         if count == 0:
             return "Error: old_string not found in file. Please ensure EXACT match, including all exact leading spaces/indentation and trailing newlines."
         if count > 1 and not replace_all:
             return (f"Error: old_string appears {count} times. "
                     "Provide more context to make it unique, or use replace_all=true.")
-                    
+
         old_content_norm = content_norm
         new_content_norm = content_norm.replace(old_norm, new_norm) if replace_all else \
                            content_norm.replace(old_norm, new_norm, 1)
-        
-        # Restore CRLF if the file originally used it
-        if is_crlf:
+
+        # Restore CRLF only for pure-CRLF files; mixed or LF-only files stay as LF
+        if is_pure_crlf:
             final_content = new_content_norm.replace("\n", "\r\n")
             old_content_final = content
         else:
