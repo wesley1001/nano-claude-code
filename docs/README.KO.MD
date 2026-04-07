@@ -4,7 +4,7 @@
 
 <div align="center">
   <a href="[https://github.com/SafeRL-Lab/Robust-Gymnasium](https://github.com/SafeRL-Lab/nano-claude-code)">
-    <img src="https://github.com/SafeRL-Lab/nano-claude-code/blob/main/docs/logo-v1.png" alt="로고" width="280"> 
+    <img src="https://github.com/SafeRL-Lab/cheetahclaws/blob/main/docs/logo-5.png" alt="로고" width="280"> 
   </a>
 
 <h1 align="center" style="font-size: 30px;"><strong><em>Nano Claude Code</em></strong>: 모든 모델을 지원하는 빠르고 사용하기 쉬운 Claude Code의 Python 재구현</h1>
