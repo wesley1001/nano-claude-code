@@ -2,7 +2,7 @@ English | [中文](https://github.com/SafeRL-Lab/clawspring/blob/main/docs/READM
 
 <br>
 
-> Nota: los bloques de código, comandos, nombres de modelos, nombres de paquetes y rutas de archivos se mantienen en gran medida sin cambios de forma intencional para conservar su uso directo.
+> Observação: blocos de código, comandos, nomes de modelos, nomes de pacotes e caminhos de arquivos foram mantidos quase sem alterações de propósito para preservar o uso direto.
 
 <div align="center">
   <a href="[https://github.com/SafeRL-Lab/Robust-Gymnasium](https://github.com/SafeRL-Lab/clawspring)">
@@ -25,7 +25,7 @@ English | [中文](https://github.com/SafeRL-Lab/clawspring/blob/main/docs/READM
  <img src="https://github.com/SafeRL-Lab/clawspring/blob/main/docs/demo.gif" width="850"/> 
  </div>
 <div align=center>
-<center style="color:#000000;text-decoration:underline">Ejecución de tareas</center>
+<center style="color:#000000;text-decoration:underline">Execução de tarefas</center>
  </div>
  
  
@@ -35,7 +35,7 @@ English | [中文](https://github.com/SafeRL-Lab/clawspring/blob/main/docs/READM
  <img src="https://github.com/SafeRL-Lab/clawspring/blob/main/docs/brainstorm_demo.gif" width="850"/> 
  </div>
 <div align=center>
-<center style="color:#000000;text-decoration:underline">Modo Brainstorm: lluvia de ideas multiagente</center>
+<center style="color:#000000;text-decoration:underline">Modo Brainstorm: brainstorming multiagente</center>
  </div>
 
 
@@ -46,7 +46,7 @@ English | [中文](https://github.com/SafeRL-Lab/clawspring/blob/main/docs/READM
  <img src="https://github.com/SafeRL-Lab/clawspring/blob/main/docs/proactive_demo.gif" width="850"/> 
  </div>
 <div align=center>
-<center style="color:#000000;text-decoration:underline">Modo proactivo: agente autónomo</center>
+<center style="color:#000000;text-decoration:underline">Modo proativo: agente autônomo</center>
  </div>
 
 ---
@@ -55,7 +55,7 @@ English | [中文](https://github.com/SafeRL-Lab/clawspring/blob/main/docs/READM
  <img src="https://github.com/SafeRL-Lab/clawspring/blob/main/docs/ssj_demo.gif" width="850"/> 
  </div>
 <div align=center>
-<center style="color:#000000;text-decoration:underline">Modo desarrollador SSJ: flujo de trabajo del menú avanzado</center>
+<center style="color:#000000;text-decoration:underline">Modo desenvolvedor SSJ: fluxo de trabalho do menu avançado</center>
  </div>
 
 ---
@@ -64,14 +64,14 @@ English | [中文](https://github.com/SafeRL-Lab/clawspring/blob/main/docs/READM
  <img src="https://github.com/SafeRL-Lab/clawspring/blob/main/docs/telegram_demo.gif" width="850"/> 
  </div>
 <div align=center>
-<center style="color:#000000;text-decoration:underline">Puente de Telegram: controla CheetahClaws desde tu teléfono</center>
+<center style="color:#000000;text-decoration:underline">Ponte do Telegram: controle o CheetahClaws pelo celular</center>
  </div>
 
 ---
 
 
  
-## 🔥🔥🔥 Novedades (hora del Pacífico)
+## 🔥🔥🔥 Novidades (horário do Pacífico)
 
 
 - Apr 07, 2026 (**v3.05.53**): **Telegram photo/voice support, process-tree kill on Bash timeout, Windows shell hints, worker fix**
@@ -112,11 +112,11 @@ For more news, see [here](https://github.com/SafeRL-Lab/cheetahclaws/blob/main/d
 
 # CheetahClaws
 
-CheetahClaws: una reimplementación en Python de Claude Code, **ligera** y **fácil de usar**, con **soporte para prácticamente cualquier modelo**, como Claude, GPT, Gemini, Kimi, Qwen, Zhipu, DeepSeek, MiniMax y modelos abiertos locales mediante Ollama o cualquier endpoint compatible con OpenAI.
+CheetahClaws: uma reimplementação em Python do Claude Code, **leve** e **fácil de usar**, com **suporte para praticamente qualquer modelo**, como Claude, GPT, Gemini, Kimi, Qwen, Zhipu, DeepSeek, MiniMax e modelos abertos locais via Ollama ou qualquer endpoint compatível com OpenAI.
 
 ---
 
-## Contenido
+## Conteúdo
   * [Why CheetahClaws](#why-cheetahclaws)
   * [CheetahClaws vs OpenClaw](#cheetahclaws-vs-openclaw)
   * [Features](#features)
@@ -155,17 +155,17 @@ CheetahClaws: una reimplementación en Python de Claude Code, **ligera** y **fá
 
 
 
-## ¿Por qué CheetahClaws?
+## Por que CheetahClaws
 
 Claude Code is a powerful, production-grade AI coding assistant — but its source code is a compiled, 12 MB TypeScript/Node.js bundle (~1,300 files, ~283K lines). It is tightly coupled to the Anthropic API, hard to modify, and impossible to run against a local or alternative model.
 
-**CheetahClaws** reimplementa el mismo bucle central en Python legible: ligero, fácil de modificar, compatible con múltiples proveedores y capaz de ejecutarse en local. Conserva lo útil y elimina la complejidad innecesaria. Véase aquí para más detalles: [English version](https://github.com/SafeRL-Lab/clawspring/blob/main/docs/comparison_claude_code_vs_nano_v3.03_en.md) and [Chinese version](https://github.com/SafeRL-Lab/clawspring/blob/main/docs/comparison_claude_code_vs_nano_v3.03_cn.md)
+**CheetahClaws** reimplementa o mesmo loop central em Python legível: leve, fácil de modificar, compatível com múltiplos provedores e capaz de rodar localmente. Mantém o que é útil e remove a complexidade desnecessária. Veja aqui mais detalhes: [English version](https://github.com/SafeRL-Lab/clawspring/blob/main/docs/comparison_claude_code_vs_nano_v3.03_en.md) and [Chinese version](https://github.com/SafeRL-Lab/clawspring/blob/main/docs/comparison_claude_code_vs_nano_v3.03_cn.md)
 
-### Resumen rápido
+### Visão geral
 
-| Dimensión | Claude Code (TypeScript) | CheetahClaws (Python) |
+| Dimensão | Claude Code (TypeScript) | CheetahClaws (Python) |
 |-----------|--------------------------|---------------------------|
-| Lenguaje | TypeScript + React/Ink | Python 3.8+ |
+| Linguagem | TypeScript + React/Ink | Python 3.8+ |
 | Source files | ~1,332 TS/TSX files | 51 Python files |
 | Lines of code | ~283K | ~12K |
 | Built-in tools | 44+ | 27 |
@@ -177,7 +177,7 @@ Claude Code is a powerful, production-grade AI coding assistant — but its sour
 | Runtime extensibility | Closed (compile-time) | Open — `register_tool()` at runtime, Markdown skills, git plugins |
 | Task dependency graph | No | Yes — `blocks` / `blocked_by` edges in `task/` package |
 
-### Dónde Claude Code destaca
+### Onde o Claude Code se destaca
 
 - **UI quality** — React/Ink component tree with streaming rendering, fine-grained diff visualization, and dialog systems.
 - **Tool breadth** — 44 tools including `RemoteTrigger`, `EnterWorktree`, and more UI-integrated tools.
@@ -185,7 +185,7 @@ Claude Code is a powerful, production-grade AI coding assistant — but its sour
 - **AI-driven memory extraction** — `extractMemories` service proactively extracts knowledge from conversations without explicit tool calls.
 - **Production reliability** — single distributable `cli.js`, comprehensive test coverage, version-locked releases.
 
-### Dónde CheetahClaws destaca
+### Onde o CheetahClaws se destaca
 
 - **Multi-provider** — switch between Claude, GPT-4o, Gemini 2.5 Pro, DeepSeek, Qwen, MiniMax, or a local Llama model with `--model` or `/model` — no recompile needed.
 - **Local model support** — run entirely offline with Ollama, LM Studio, or any vLLM-hosted model.
@@ -217,11 +217,11 @@ Claude Code is a powerful, production-grade AI coding assistant — but its sour
 
 [OpenClaw](https://github.com/openclaw/openclaw) is another popular open-source AI assistant built on TypeScript/Node.js. The two projects have **different primary goals** — here is how they compare.
 
-### Resumen rápido
+### Visão geral
 
-| Dimensión | OpenClaw (TypeScript) | CheetahClaws (Python) |
+| Dimensão | OpenClaw (TypeScript) | CheetahClaws (Python) |
 |-----------|----------------------|---------------------|
-| Lenguaje | TypeScript + Node.js | Python 3.8+ |
+| Linguagem | TypeScript + Node.js | Python 3.8+ |
 | Source files | ~10,349 TS/JS files | 51 Python files |
 | Lines of code | ~245K | ~12K |
 | Primary focus | Personal life assistant across messaging channels | AI **coding** assistant / developer tool |
@@ -247,7 +247,7 @@ Claude Code is a powerful, production-grade AI coding assistant — but its sour
 - **Browser automation** — dedicated Chrome/Chromium profile with snapshot, actions, and upload tools.
 - **Production reliability** — versioned npm releases, comprehensive CI, onboarding wizard, `openclaw doctor` diagnostics.
 
-### Dónde CheetahClaws destaca
+### Onde o CheetahClaws se destaca
 
 - **Coding toolset** — Read/Write/Edit/Bash/Glob/Grep/NotebookEdit/GetDiagnostics are purpose-built for software development; CheetahClaws understands diffs, file trees, and code structure.
 - **True local model support** — full Ollama/vLLM/LM Studio integration with streaming, tool-calling, and vision — no cloud required.
@@ -259,7 +259,7 @@ Claude Code is a powerful, production-grade AI coding assistant — but its sour
 - **Offline voice** — `/voice` transcribes locally with `faster-whisper`; no subscription, no OAuth, works without internet.
 - **Session cloud sync** — `/cloudsave` backs up full conversations to private GitHub Gists with zero extra dependencies.
 
-### Cuándo elegir cada uno
+### Quando escolher cada um
 
 | If you want… | Use |
 |---|---|
@@ -273,7 +273,7 @@ Claude Code is a powerful, production-grade AI coding assistant — but its sour
 
 ---
 
-### Diferencias clave de diseño
+### Diferenças principais de design
 
 **Agent loop** — CheetahClaws uses a Python generator that `yield`s typed events (`TextChunk`, `ToolStart`, `ToolEnd`, `TurnDone`). The entire loop is visible in one file, making it easy to add hooks, custom renderers, or logging.
 
@@ -290,7 +290,7 @@ Claude Code is a powerful, production-grade AI coding assistant — but its sour
 
 **Memory** — Claude Code's `extractMemories` service has the model proactively surface facts. CheetahClaws's `memory/` package is tool-driven: the model calls `MemorySave` explicitly, which is more predictable and auditable. Each memory now carries `confidence`, `source`, `last_used_at`, and `conflict_group` metadata; search re-ranks by confidence × recency; and `/memory consolidate` offers a manual consolidation pass without silently modifying memories in the background.
 
-### Quién debería usar CheetahClaws
+### Quem deve usar o CheetahClaws
 
 - Developers who want to **use a local or non-Anthropic model** as their coding assistant.
 - Researchers studying **how agentic coding assistants work** — the entire system fits in one screen.
@@ -299,9 +299,9 @@ Claude Code is a powerful, production-grade AI coding assistant — but its sour
 
 ---
 
-## Características
+## Recursos
 
-| Característica | Detalles |
+| Recurso | Detalhes |
 |---|---|
 | Multi-provider | Anthropic · OpenAI · Gemini · Kimi · Qwen · Zhipu · DeepSeek · MiniMax · Ollama · LM Studio · Custom endpoint |
 | Interactive REPL | readline history, Tab-complete slash commands with descriptions + subcommand hints; Bracketed Paste Mode for reliable multi-line paste |
@@ -339,11 +339,11 @@ Claude Code is a powerful, production-grade AI coding assistant — but its sour
 
 ---
 
-## Modelos compatibles
+## Modelos compatíveis
 
 ### Closed-Source (API)
 
-| Proveedor | Modelo | Contexto | Fortalezas | Variable de entorno API |
+| Provedor | Modelo | Contexto | Pontos fortes | Variável da API |
 |---|---|---|---|---|
 | **Anthropic** | `claude-opus-4-6` | 200k | Most capable, best for complex reasoning | `ANTHROPIC_API_KEY` |
 | **Anthropic** | `claude-sonnet-4-6` | 200k | Balanced speed & quality | `ANTHROPIC_API_KEY` |
@@ -374,7 +374,7 @@ Claude Code is a powerful, production-grade AI coding assistant — but its sour
 
 ### Open-Source (Local via Ollama)
 
-| Modelo | Tamaño | Fortalezas | Comando pull |
+| Modelo | Tamanho | Pontos fortes | Comando pull |
 |---|---|---|---|
 | `llama3.3` | 70B | General purpose, strong reasoning | `ollama pull llama3.3` |
 | `llama3.2` | 3B / 11B | Lightweight | `ollama pull llama3.2` |
@@ -396,7 +396,7 @@ Claude Code is a powerful, production-grade AI coding assistant — but its sour
 
 ---
 
-## Instalación
+## Instalação
 
 ### Recommended: install as a global command with `uv`
 
@@ -448,7 +448,7 @@ python cheetahclaws.py
 
 ---
 
-## Uso: modelos API de código cerrado
+## Uso: modelos de API proprietários
 
 ### Anthropic Claude
 
@@ -552,7 +552,7 @@ cheetahclaws --model minimax/abab6.5s-chat
 
 ---
 
-## Uso: modelos de código abierto (local)
+## Uso: modelos open source (local)
 
 ### Option A — Ollama (Recommended)
 
@@ -707,7 +707,7 @@ For a remote GPU server:
 
 ---
 
-## Formato del nombre del modelo
+## Formato dos nomes de modelo
 
 Three equivalent formats are supported:
 
@@ -742,7 +742,7 @@ cheetahclaws --model qwen:qwen-max
 
 ---
 
-## Referencia de CLI
+## Referência da CLI
 
 ```
 cheetahclaws [OPTIONS] [PROMPT]
@@ -785,7 +785,7 @@ cheetahclaws --thinking --verbose
 
 Type `/` and press **Tab** to see all commands with descriptions. Continue typing to filter, then Tab again to auto-complete. After a command name, press **Tab** again to see its subcommands (e.g. `/plugin ` → `install`, `uninstall`, `enable`, …).
 
-| Comando | Descripción |
+| Comando | Descrição |
 |---|---|
 | `/help` | Show all commands |
 | `/clear` | Clear conversation history |
@@ -883,7 +883,7 @@ Type `/` and press **Tab** to see all commands with descriptions. Continue typin
 
 ---
 
-## Configuración de claves API
+## Configuração de chaves de API
 
 ### Method 1: Environment Variables (recommended)
 
@@ -933,7 +933,7 @@ Keys are saved to `~/.cheetahclaws/config.json` and loaded automatically on next
 
 ---
 
-## Sistema de permisos
+## Sistema de permissões
 
 | Mode | Behavior |
 |---|---|
@@ -957,11 +957,11 @@ Keys are saved to `~/.cheetahclaws/config.json` and loaded automatically on next
 
 ---
 
-## Herramientas integradas
+## Ferramentas integradas
 
 ### Core Tools
 
-| Herramienta | Descripción | Parámetros clave |
+| Ferramenta | Descrição | Parâmetros-chave |
 |---|---|---|
 | `Read` | Read file with line numbers | `file_path`, `limit`, `offset` |
 | `Write` | Create or overwrite file (shows diff) | `file_path`, `content` |
@@ -974,14 +974,14 @@ Keys are saved to `~/.cheetahclaws/config.json` and loaded automatically on next
 
 ### Notebook & Diagnostics Tools
 
-| Herramienta | Descripción | Parámetros clave |
+| Ferramenta | Descrição | Parâmetros-chave |
 |---|---|---|
 | `NotebookEdit` | Edit a Jupyter notebook (`.ipynb`) cell | `notebook_path`, `new_source`, `cell_id`, `cell_type`, `edit_mode` (`replace`/`insert`/`delete`) |
 | `GetDiagnostics` | Get LSP-style diagnostics for a source file (pyright/mypy/flake8 for Python; tsc/eslint for JS/TS; shellcheck for shell) | `file_path`, `language` (optional override) |
 
-### Memoria Tools
+### Memória Tools
 
-| Herramienta | Descripción | Parámetros clave |
+| Ferramenta | Descrição | Parâmetros-chave |
 |---|---|---|
 | `MemorySave` | Save or update a persistent memory | `name`, `type`, `description`, `content`, `scope` |
 | `MemoryDelete` | Delete a memory by name | `name`, `scope` |
@@ -990,7 +990,7 @@ Keys are saved to `~/.cheetahclaws/config.json` and loaded automatically on next
 
 ### Sub-Agent Tools
 
-| Herramienta | Descripción | Parámetros clave |
+| Ferramenta | Descrição | Parâmetros-chave |
 |---|---|---|
 | `Agent` | Spawn a sub-agent for a task | `prompt`, `subagent_type`, `isolation`, `name`, `model`, `wait` |
 | `SendMessage` | Send a message to a named background agent | `name`, `message` |
@@ -1000,13 +1000,13 @@ Keys are saved to `~/.cheetahclaws/config.json` and loaded automatically on next
 
 ### Background & Autonomy Tools
 
-| Herramienta | Descripción | Parámetros clave |
+| Ferramenta | Descrição | Parâmetros-chave |
 |---|---|---|
 | `SleepTimer` | Schedule a silent background timer; injects an automated wake-up prompt when it fires so the agent can resume monitoring or deferred tasks | `seconds` |
 
 ### Skill Tools
 
-| Herramienta | Descripción | Parámetros clave |
+| Ferramenta | Descrição | Parâmetros-chave |
 |---|---|---|
 | `Skill` | Invoke a skill by name from within the conversation | `name`, `args` |
 | `SkillList` | List all available skills with triggers and metadata | — |
@@ -1025,11 +1025,11 @@ MCP tools are discovered automatically from configured servers and registered un
 
 ---
 
-## Memoria
+## Memória
 
 The model can remember things across conversations using the built-in memory system.
 
-### Almacenamiento
+### Armazenamento
 
 Memories are stored as individual markdown files in two scopes:
 
@@ -1040,7 +1040,7 @@ Memories are stored as individual markdown files in two scopes:
 
 A `MEMORY.md` index (≤ 200 lines / 25 KB) is auto-rebuilt on every save or delete and injected into the system prompt so the model always has an overview of what's been remembered.
 
-### Memoria types
+### Memória types
 
 | Type | Use for |
 |---|---|
@@ -1049,7 +1049,7 @@ A `MEMORY.md` index (≤ 200 lines / 25 KB) is auto-rebuilt on every save or del
 | `project` | Ongoing work, deadlines, decisions not in git history |
 | `reference` | Links to external systems (Linear, Grafana, Slack, etc.) |
 
-### Memoria file format
+### Memória file format
 
 Each memory is a markdown file with YAML frontmatter:
 
@@ -1078,7 +1078,7 @@ Prefer 4-space indentation and full type hints in all Python code.
 | `last_used_at` | — | Updated automatically each time this memory is returned by MemorySearch |
 | `conflict_group` | — | Groups related memories (e.g. `writing_style`) for conflict tracking |
 
-### Detección de conflictos
+### Detecção de conflitos
 
 When `MemorySave` is called with a name that already exists but different content, the system reports the conflict before overwriting:
 
@@ -1088,7 +1088,7 @@ Memory saved: 'writing_style' [feedback/user]
   Old content: Prefer formal, academic style...
 ```
 
-### Recuperación por ranking
+### Recuperação ranqueada
 
 `MemorySearch` ranks results by **confidence × recency** (30-day exponential decay) rather than plain keyword order. Memories that haven't been used recently fade in priority. Each search hit also updates `last_used_at` so frequently-accessed memories stay prominent.
 
@@ -1116,7 +1116,7 @@ Good times to run `/memory consolidate`:
 - After a session where you shared project background or decisions
 - After completing a task with clear planning choices
 
-### Ejemplo interaction
+### Exemplo interaction
 
 ```
 You: Remember that I prefer 4-space indentation and type hints.
@@ -1270,7 +1270,7 @@ MCP lets you connect any external tool server — local subprocess or remote HTT
 | **SSE** | `"sse"` | HTTP Server-Sent Events stream |
 | **HTTP** | `"http"` | Streamable HTTP POST (newer servers) |
 
-### Configuración
+### Configuração
 
 Place a `.mcp.json` file in your project directory **or** edit `~/.cheetahclaws/mcp.json` for user-wide servers.
 
@@ -1298,7 +1298,7 @@ Place a `.mcp.json` file in your project directory **or** edit `~/.cheetahclaws/
 
 Config priority: `.mcp.json` (project) overrides `~/.cheetahclaws/mcp.json` (user) by server name.
 
-### Inicio rápido
+### Início rápido
 
 ```bash
 # Install a popular MCP server
@@ -1411,7 +1411,7 @@ Use `--project` flag: `/plugin install name@url --project`
 
 ---
 
-## Herramienta AskUserQuestion
+## Ferramenta AskUserQuestion
 
 Claude can pause mid-task and interactively ask you a question before proceeding.
 
@@ -1446,7 +1446,7 @@ Your choice (number or text):
 
 ---
 
-## Gestión de tareas
+## Gerenciamento de tarefas
 
 The `task/` package gives Claude (and you) a structured task list for tracking multi-step work within a session.
 
@@ -1509,11 +1509,11 @@ Claude:
 
 ---
 
-## Entrada de voz
+## Entrada por voz
 
 CheetahClaws v3.05 adds a fully offline voice-to-prompt pipeline. Speak your request — it is transcribed and submitted as if you had typed it.
 
-### Inicio rápido
+### Início rápido
 
 ```bash
 # 1. Install a recording backend (choose one)
@@ -1568,7 +1568,7 @@ These are passed as Whisper's `initial_prompt` so the STT engine prefers correct
 
 ### Comandos
 
-| Comando | Descripción |
+| Comando | Descrição |
 |---|---|
 | `/voice` | Record voice and auto-submit the transcript as your next prompt |
 | `/voice status` | Show which recording and STT backends are available, plus the active microphone |
@@ -1607,7 +1607,7 @@ The selected device is shown in `/voice status` and used for all subsequent reco
 
 `/brainstorm` runs a structured multi-persona AI debate over your project, then synthesizes all perspectives into an actionable plan.
 
-### Cómo funciona
+### Como funciona
 
 1. **Context snapshot** — reads `README.md`, `CLAUDE.md`, and root file listing from the current working directory.
 2. **Agent count** — you are prompted to choose how many agents (2–100, default 5). Press Enter to use the default.
@@ -1637,7 +1637,7 @@ The selected device is shown in `/voice status` and used for all subsequent reco
   How many agents? (2-100, default 5) > 7
 ```
 
-### Ejemplo output
+### Exemplo output
 
 ```
 [myproject] ❯ /brainstorm medical research funding
@@ -1667,7 +1667,7 @@ Generating diverse perspectives...
 
 ---
 
-## Modo desarrollador SSJ
+## Modo desenvolvedor SSJ
 
 `/ssj` opens a persistent interactive power menu — a single entry point for the most common development workflows, so you never have to remember command names.
 
@@ -1802,7 +1802,7 @@ SSJ option 4 runs a structured multi-round expert debate on any file:
 
 ---
 
-## Puente de Telegram
+## Ponte do Telegram
 
 `/telegram` turns cheetahclaws into a Telegram bot — receive messages from your phone, run the model with full tool access, and reply automatically.
 
@@ -1810,7 +1810,7 @@ SSJ option 4 runs a structured multi-round expert debate on any file:
 <img src="https://github.com/SafeRL-Lab/clawspring/blob/main/docs/telegram_demo.gif" width="850"/>
 </div>
 
-### Configuración (una sola vez)
+### Configuração (uma vez)
 
 1. Open [@BotFather](https://t.me/BotFather) in Telegram → `/newbot` → copy the token.
 2. Send any message to your new bot (e.g. "hi"), then open the URL below in your browser — replace `<TOKEN>` with your real token:
@@ -1855,7 +1855,7 @@ The response is JSON. Find `"chat"` → `"id"` — that number is your chat ID:
 
 Token and chat_id are saved to `~/.cheetahclaws/config.json`. On next launch the bridge **auto-starts** if configured — the startup banner shows `flags: [telegram]`.
 
-### Cómo funciona
+### Como funciona
 
 ```
 Phone (Telegram)                  cheetahclaws terminal
@@ -1875,7 +1875,7 @@ Phone (Telegram)                  cheetahclaws terminal
 
 ### Comandos
 
-| Comando | Descripción |
+| Comando | Descrição |
 |---|---|
 | `/telegram <token> <chat_id>` | Configure token + chat_id, then start the bridge |
 | `/telegram` | Start the bridge using saved config |
@@ -1897,11 +1897,11 @@ If both `telegram_token` and `telegram_chat_id` are set in `~/.cheetahclaws/conf
 
 ---
 
-## Monitorización proactiva en segundo plano
+## Monitoramento proativo em segundo plano
 
 CheetahClaws v3.05.2 adds a **sentinel daemon** that automatically wakes the agent after a configurable period of inactivity — no user prompt required. This enables use cases like continuous log monitoring, market script polling, or scheduled code checks.
 
-### Inicio rápido
+### Início rápido
 
 ```
 [myproject] ❯ /proactive 5m
@@ -1921,7 +1921,7 @@ Proactive background polling: ON  (triggering every 300s of inactivity)
 
 ### Comandos
 
-| Comando | Descripción |
+| Comando | Descrição |
 |---|---|
 | `/proactive` | Show current status (ON/OFF and interval) |
 | `/proactive 5m` | Enable — trigger every 5 minutes of inactivity |
@@ -1931,7 +1931,7 @@ Proactive background polling: ON  (triggering every 300s of inactivity)
 
 Duration suffix: `s` = seconds, `m` = minutes, `h` = hours. Plain integer = seconds.
 
-### Cómo funciona
+### Como funciona
 
 - A background daemon thread starts when the REPL launches (paused by default).
 - The daemon checks elapsed time since the last user or agent interaction every second.
@@ -1953,7 +1953,7 @@ Duration suffix: `s` = seconds, `m` = minutes, `h` = hours. Plain integer = seco
 
 CheetahClaws automatically snapshots your conversation and any edited files after every turn, so you can always rewind to an earlier state.
 
-### Cómo funciona
+### Como funciona
 
 - **Auto-snapshot** — after each turn, the checkpoint system saves the current conversation messages, token counts, and a copy-on-write backup of every file that was written or edited that turn.
 - **100-snapshot sliding window** — older snapshots are automatically evicted when the limit is reached.
@@ -1963,14 +1963,14 @@ CheetahClaws automatically snapshots your conversation and any edited files afte
 
 ### Comandos
 
-| Comando | Descripción |
+| Comando | Descrição |
 |---|---|
 | `/checkpoint` | List all snapshots for the current session |
 | `/checkpoint <id>` | Rewind: restore files to their state at snapshot `<id>` and trim conversation to that point |
 | `/checkpoint clear` | Delete all snapshots for the current session |
 | `/rewind` | Alias for `/checkpoint` |
 
-### Ejemplo
+### Exemplo
 
 ```
 [myproject] ❯ /checkpoint
@@ -1988,11 +1988,11 @@ CheetahClaws automatically snapshots your conversation and any edited files afte
 
 ---
 
-## Modo plan
+## Modo de planejamento
 
 Plan mode is a structured workflow for tackling complex, multi-file tasks: Claude first analyses the codebase in a read-only phase and writes an explicit plan, then the user approves before implementation begins.
 
-### Cómo funciona
+### Como funciona
 
 In plan mode:
 - **Only reads** are permitted (`Read`, `Glob`, `Grep`, `WebFetch`, `WebSearch`, safe `Bash` commands).
@@ -2046,7 +2046,7 @@ Claude: [implements the plan]
 
 ### Comandos
 
-| Comando | Descripción |
+| Comando | Descrição |
 |---|---|
 | `/plan <description>` | Enter plan mode with a task description |
 | `/plan` | Print the current plan file contents |
@@ -2055,7 +2055,7 @@ Claude: [implements the plan]
 
 ---
 
-## Compresión de contexto
+## Compressão de contexto
 
 Long conversations are automatically compressed to stay within the model's context window.
 
@@ -2080,7 +2080,7 @@ If plan mode is active, the plan file context is automatically restored after an
 
 ---
 
-## Vista diff
+## Visualização de diff
 
 When the model edits or overwrites a file, you see a git-style diff:
 
@@ -2100,7 +2100,7 @@ Green lines = added, red lines = removed. New file creations show a summary inst
 
 ---
 
-## Soporte para CLAUDE.md
+## Suporte a CLAUDE.md
 
 Place a `CLAUDE.md` file in your project to give the model persistent context about your codebase. CheetahClaws automatically finds and injects it into the system prompt.
 
@@ -2131,9 +2131,9 @@ Place a `CLAUDE.md` file in your project to give the model persistent context ab
 
 ---
 
-## Gestión de sesiones
+## Gerenciamento de sessões
 
-### Almacenamiento layout
+### Armazenamento layout
 
 Every exit automatically saves to three places:
 
@@ -2246,11 +2246,11 @@ Resume a specific file:
 
 ---
 
-## Sincronización en la nube (GitHub Gist)
+## Sincronização na nuvem (GitHub Gist)
 
 CheetahClaws v3.05.3 adds optional cloud backup of conversation sessions via **GitHub Gist**. Sessions are stored as private Gists (JSON), browsable in the GitHub UI. No extra dependencies — uses Python's stdlib `urllib`.
 
-### Configuración (una sola vez)
+### Configuração (uma vez)
 
 1. Go to [github.com/settings/tokens](https://github.com/settings/tokens) → **Generate new token (classic)**
 2. Enable the **`gist`** scope
@@ -2299,7 +2299,7 @@ From that point on, every `/exit` or `/quit` automatically uploads the session b
 
 ### Comandos reference
 
-| Comando | Descripción |
+| Comando | Descrição |
 |---|---|
 | `/cloudsave setup <token>` | Save GitHub token (needs `gist` scope) |
 | `/cloudsave` | Upload current session to a new or existing Gist |
@@ -2310,7 +2310,7 @@ From that point on, every `/exit` or `/quit` automatically uploads the session b
 
 ---
 
-## Estructura del proyecto
+## Estrutura do projeto
 
 ```
 cheetahclaws/
@@ -2387,7 +2387,7 @@ cheetahclaws/
 
 ---
 
-## Preguntas frecuentes
+## Perguntas frequentes
 
 **Q: How do I add an MCP server?**
 
