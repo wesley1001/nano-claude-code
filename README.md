@@ -409,7 +409,7 @@ Claude Code is a powerful, production-grade AI coding assistant — but its sour
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # Clone and install
-git clone https://github.com/SafeRL-Lab/clawspring
+git clone git@github.com:SafeRL-Lab/cheetahclaws.git
 cd cheetahclaws
 uv tool install .
 ```
@@ -437,7 +437,7 @@ uv tool uninstall cheetahclaws
 ### Alternative: run directly from the repo
 
 ```bash
-git clone https://github.com/SafeRL-Lab/clawspring
+git clone git@github.com:SafeRL-Lab/cheetahclaws.git
 cd cheetahclaws
 
 pip install -r requirements.txt
