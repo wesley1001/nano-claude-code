@@ -121,6 +121,41 @@ Other install methods: [pip install](#alternative-install-with-pip) | [uv instal
 ## 🔥🔥🔥 News (Pacific Time)
 
  
+- Apr 16, 2026 (**v3.05.74**): **Web UI production hardening — persistence, multi-user auth, ops endpoints, JS module split, pytest suite**
+  - **SQLite persistence** (`web/db.py`, `web/models.py`) — SQLAlchemy-backed store with 4 tables: `users`, `chat_sessions`, `messages`, `api_credentials`. Sessions + message history now survive server restarts (previously in-memory only, lost on restart). DB file at `~/.cheetahclaws/web.db` (0600). Config key `CHEETAHCLAWS_WEB_DB` overrides the path.
+  - **Multi-user auth** (`web/auth.py`) — replaced single generated password with full accounts: bcrypt password hashing (passlib) + stateless JWT cookies (PyJWT, HS256, 7-day TTL). JWT signing secret persisted to `~/.cheetahclaws/web_secret` (0600) so logins survive restarts. New endpoints: `POST /api/auth/register` (first user becomes admin), `POST /api/auth/login`, `POST /api/auth/logout`, `GET /api/auth/whoami`, `GET /api/auth/bootstrap` (first-run routing). Legacy `POST /api/auth` kept for the terminal password page.
+  - **Session CRUD** — new `PATCH /api/sessions/{id}` to rename, `DELETE /api/sessions/{id}` to remove, `GET /api/sessions/{id}/export` to download conversation as Markdown. Auto-titling from first user message. Cross-user isolation enforced even on in-memory cache hits (one session hit patched after smoke test revealed the leak).
+  - **Structured JSON logging** (`web/logging_setup.py`) — `logging` + custom JSON formatter emits one record per line to stderr, e.g. `{"ts":..., "level":"info", "logger":"web.server", "msg":"req", "method":"POST", "path":"/api/auth/login", "status":200, "dur_ms":259, "user_id":1}`. Every HTTP response auto-logs method/path/status/dur_ms/user_id/peer. Level controlled by `CHEETAHCLAWS_LOG_LEVEL` env (default INFO).
+  - **Ops endpoints** — `GET /health` returns `{ok, db, uptime_s}` (503 if DB unreachable); `GET /metrics` returns Prometheus v0.0.4 text with `cheetahclaws_{uptime_seconds, requests_total, requests_4xx, requests_5xx, auth_logins_total, auth_logins_failed, auth_registrations_total, users_total, ws_connections_total}`. Unauthenticated so Prometheus/k8s probes can hit them.
+  - **JS module split** (`web/static/js/`) — monolithic 1813-line `chat.html` → 552 lines of HTML + 9 vanilla JS modules (`chat.js` core class, `util.js`, `auth.js`, `sidebar.js`, `tools.js`, `approval.js`, `settings.js`, `welcome.js`, `init.js`) loaded via plain `<script src>` tags. Prototype-mixin pattern (`Object.assign(ChatApp.prototype, {...})`) keeps `app.foo()` call sites unchanged. No bundler, no build step.
+  - **ETag + conditional caching** — JS/CSS/HTML served with `Cache-Control: no-cache, must-revalidate` + weak ETag (`mtime-size`). Browser gets 304 when unchanged, fresh content after any edit. Binary assets keep 24h cache. Path traversal blocked by resolved-path `is_relative_to` check.
+  - **pytest suite** (`tests/test_web_api.py`) — 21 end-to-end HTTP tests using httpx: bootstrap/register/login/whoami/logout, sessions CRUD + export + markdown, cross-user isolation, persistence after cache clear, `/health`, `/metrics` counter deltas, CORS preflight, auth gating of every endpoint. Spins the real server in a thread on a random port, DB truncated between tests. Runs in ~5s. `pytest tests/test_web_api.py`.
+  - **Sidebar UX** — chat sessions now show title + relative time ("just now", "12m ago", "3d ago") + message count + busy dot. Search box filters by title/id on the client. Right-click (or long-press) gives a context menu: Rename / Export Markdown / Delete. Footer shows current username + Sign out link.
+  - **Register-or-login on first visit** — chat UI now calls `/api/auth/bootstrap` on load; if no user exists it shows a "Create your first account" form (first registration becomes admin), otherwise the "Sign in" form. Username + password instead of a single server-generated password.
+  - **Theme: light default + system auto** — `:root` now carries the light palette; `@media (prefers-color-scheme: dark)` swaps in the dark palette when the user hasn't explicitly chosen a theme. Toggle button cycles **system → light → dark → system**, icon reflects the effective theme, title tooltip spells out the current mode. Inline pre-paint script in `<head>` sets `data-theme` before first paint to avoid FOUC.
+  - **Auto port selection** — `cheetahclaws --web` (no `--port`) now tries 8080 first; on `EADDRINUSE` it binds `:0` and lets the kernel pick a free port, banner reports the real URL. Explicit `--port N` binds exactly N or fails loudly (user intent preserved). `--port` argparse default changed from `8080` → `None` as a sentinel.
+  - **Favicon + MIME polish** — `web/static/favicon.{png,ico}` cropped from `docs/logo-5.png` (leaping cheetah, transparent background, multi-size ICO 16/32/48). Served from root as `/favicon.ico` for browser defaults. MIME table extended with `.ico` (`image/vnd.microsoft.icon`), `.svg`, `.jpg`, `.woff`, `.woff2`.
+  - **Welcome dashboard rebalanced** — old 5-card "Bridges & Media" row (ragged in 2×2 grid) split into two 4-card sections: **Bridges** (Telegram · WeChat · Slack · Monitor) and **Multi-Modal Media** (Voice Input · Vision · Copy Output · Export). `/cwd` added to Development Tools. Tagline changed to **"Personal AI Assistant · Support Any Model · Autonomous 24/7"**.
+  - **Bridges commands in Chat UI** — `/telegram`, `/wechat` (+`/weixin` alias), `/slack`, `/voice` now registered in `web/api.py`'s slash registry (previously only the terminal REPL had them), so clicking the dashboard cards actually runs the command.
+  - **New extras** — `pip install 'cheetahclaws[web]'` installs `sqlalchemy>=2.0`, `passlib[bcrypt]>=1.7.4`, `PyJWT>=2.8.0`. CLI-only installs remain dependency-free. `[all]` extra updated.
+  - **Version bumped to 3.05.74.**
+
+- Apr 16, 2026 (**v3.05.73**): **Web UI — browser-based Chat UI + structured event API**
+  - **Web Chat UI** (`web/chat.html`) — `cheetahclaws --web` now serves a rich browser-based chat interface at `/chat` alongside the existing PTY terminal at `/`. Features: real-time streaming via Server-Sent Events (SSE), collapsible tool cards with status badges, inline permission approval buttons (Allow/Deny), activity indicator (spinner + state labels for Thinking/Running/Processing), Markdown rendering with XSS sanitization (`marked.js` bundled), dark/light theme toggle with `localStorage` persistence, mobile-responsive layout with sidebar overlay.
+  - **Structured event API** (`web/api.py`) — new `ChatSession` class bridges `agent.run()` generator to WebSocket/SSE event streams following the same pattern as the Telegram/Slack/WeChat bridges. Events: `text_chunk`, `thinking_chunk`, `tool_start`, `tool_end`, `permission_request`, `permission_response`, `turn_done`, `command_result`, `interactive_menu`, `input_request`, `status`, `error`. Event buffer with replay for late-joining subscribers.
+  - **8 new API endpoints** — `POST /api/prompt` (submit prompt or slash command), `WS /api/events` (real-time event stream), `POST /api/approve` (permission response), `GET /api/sessions` (list sessions), `GET /api/sessions/{id}` (session details + message history), `GET/PATCH /api/config` (read/write config), `GET /api/models` (list all 11 providers and models), `POST /api/auth` (login, sets HttpOnly cookie).
+  - **Settings panel** — click ⚙ to open: model selector grouped by 11 providers (Anthropic, OpenAI, Gemini, Ollama, DeepSeek, Qwen, etc.), permission mode dropdown, thinking/verbose toggles, max tokens input, per-provider API key management with status indicators, quick action buttons (Compact/Status/Cost/Context), terminal link for fallback.
+  - **Slash command support in Chat UI** — all 45+ commands work. Quick commands (`/status`, `/help`, `/model`, `/context`) return results instantly via POST response. Long-running commands (`/brainstorm`, `/worker`, `/plan`, `/agent`) stream events in real-time via SSE (server keeps HTTP connection open). `/ssj` renders a clickable 12-item interactive menu. `/brainstorm` (no args) shows a topic input box before starting.
+  - **SSJ sub-commands** — `/ssj debate`, `/ssj commit`, `/ssj readme`, `/ssj scan`, `/ssj propose`, `/ssj review` now run directly as agent queries without showing the interactive menu. The menu only appears for `/ssj` (no args).
+  - **Feature dashboard** — welcome page shows 24 feature cards organized in 6 categories (Core, Agent Features, Session & Memory, Multi-Model, Development Tools, Bridges & Media) with 7 clickable quick-command chips.
+  - **Security hardening** — `hmac.compare_digest()` for timing-safe token comparison, XSS sanitization (HTML tags escaped before Markdown rendering), CORS restricted to request Origin echo (no wildcard), HttpOnly + SameSite=Strict cookies, auth checked before WebSocket upgrade, `_BufferedSocket` wrapper replaces fragile `sock.recv` monkey-patching.
+  - **Session management** — chat sessions with idle timeout (30 min), background reaper for orphaned sessions, session list in sidebar with message count and busy indicator, click to switch, "+" to create new.
+  - **Web bridge integration** — `RuntimeContext` extended with `web_input_event`, `web_input_value`, `in_web_turn` fields. `tools/interaction.py` routes permission prompts to web bridge via `threading.Event` synchronization. `commands/advanced.py` detects web turns and skips interactive prompts (uses defaults like Telegram bridge).
+  - **Thread-safe stdout streaming** — `_ThreadLocalStdout` intercepts `print()` only from the target command thread, broadcasts as `text_chunk` events. Other threads unaffected.
+  - **`pyproject.toml` packaging** — `web` package added to `packages` list, `*.js`, `*.css`, `*.html` added to `package-data`. Static assets (`xterm.min.js`, `marked.min.js`, `chat.html`) correctly included in `pip install` distributions.
+  - **Docs** — new [Web UI Guide](docs/guides/web-ui.md) (304 lines): quick start, full feature list, settings panel, API reference with JSON examples for all 8 endpoints and 12 event types, architecture notes, troubleshooting. README updated with Web UI section, feature table entry, CLI options, and examples.
+  - **Version bumped to 3.05.73.**
+
 - Apr 15, 2026 (**v3.05.72**): **Trading agent, error classifier, parallel tools, prompt injection detection, SQLite sessions, tool cache, auxiliary model, safe stdio**
   - **Trading agent module** (`modular/trading/`) — AI-powered multi-agent trading analysis and backtesting system. 5-phase analysis pipeline: data collection (technical indicators, fundamentals, news) → Bull/Bear researcher debate with BM25 memory → research judge recommendation → risk management panel (aggressive/conservative/neutral 3-way debate) → portfolio manager final decision (BUY/OVERWEIGHT/HOLD/UNDERWEIGHT/SELL). 4 built-in backtest strategies (dual MA, RSI mean reversion, Bollinger breakout, MACD crossover) with equity and crypto engines. 7 AI tools (`GetMarketData`, `GetPrice`, `GetTechnicalIndicators`, `GetFundamentals`, `GetNews`, `RunBacktest`, `TradingMemory`). 11 pure-Python technical indicators. Data source fallback chains (yfinance → coingecko → akshare). Post-trade reflection mechanism feeds lessons back into BM25 memory. SSJ integration as option 14 with guided sub-menu. Supports US/HK/A-share stocks and 20+ cryptos. Install: `pip install "cheetahclaws[trading]"`.
   - **Error classifier** (`error_classifier.py`) — centralized API error taxonomy (auth, billing, rate_limit, context_overflow, model_not_found, overloaded, connection, timeout) with per-category recovery hints, retryability, and backoff multipliers. Replaces fragile string matching in `agent.py` and `cheetahclaws.py`.
@@ -194,6 +229,7 @@ CheetahClaws: **A Lightweight** and **Easy-to-Use** Python Reimplementation of C
   * [Usage: Open-Source Models (Local)](#usage-open-source-models-local)
   * [Model Name Format](#model-name-format)
   * [Trading Agent](#trading-agent) (multi-agent analysis, backtesting, memory)
+  * [Web UI](#web-ui) (chat interface, settings, API endpoints)
   * [Documentation](#documentation) (guides for all features)
   * [Contributing](#contributing)
   * [FAQ](#faq)
@@ -255,6 +291,7 @@ Claude Code is a powerful, production-grade AI coding assistant — but its sour
 - **Rich Live streaming rendering** — When `rich` is installed, responses stream as live-updating Markdown in place (no duplicate raw text), with clean tool-call interleaving.
 - **Native Ollama reasoning** — Local reasoning models (deepseek-r1, qwen3, gemma4) stream their `<think>` tokens directly to the terminal via `ThinkingChunk` events; enable with `/verbose` and `/thinking`.
 - **Native Ollama vision** — `/image [prompt]` captures the clipboard and sends it to local vision models (llava, gemma4, llama3.2-vision) via Ollama's native image API. No cloud required.
+- **Built-in Web UI** — `--web` launches a production-ready browser interface: multi-user accounts (bcrypt + JWT), SQLite-backed session history that survives restarts, rich Chat UI at `/chat` with streaming messages, tool cards, permission approval, sidebar session CRUD + search + markdown export, light/dark/system theme, settings panel with per-provider API keys. Full xterm.js PTY terminal at `/` keeps 100% CLI parity. Ops endpoints (`/health`, `/metrics`) + structured JSON logs + 21 pytest end-to-end tests. Nine tiny vanilla-JS modules under `web/static/js/` — no Node.js, no React, no build step. `cheetahclaws --web` auto-picks a free port if 8080 is taken.
 - **Reliable multi-line paste** — Bracketed Paste Mode (`ESC[?2004h`) collects any pasted text — code blocks, multi-paragraph prompts, long diffs — as a single turn with zero latency and no blank-line artifacts.
 - **Rich Tab completion** — Tab after `/` shows all commands with one-line descriptions and subcommand hints; subcommand Tab-complete works for `/mcp`, `/plugin`, `/tasks`, `/cloudsave`, and more.
 - **Checkpoint & rewind** — `/checkpoint` lists all auto-snapshots of conversation + file state; `/checkpoint <id>` rewinds both files and history to any earlier point in the session.
@@ -395,6 +432,7 @@ Claude Code is a powerful, production-grade AI coding assistant — but its sour
 | Extended Thinking | Toggle on/off for Claude models; native `<think>` block streaming for local Ollama reasoning models (deepseek-r1, qwen3, gemma4) |
 | Cost tracking | Token usage + estimated USD cost |
 | Non-interactive mode | `--print` flag for scripting / CI |
+| **Web UI** | `--web` opens the browser. Multi-user accounts (bcrypt + JWT), SQLite-persisted history, session CRUD + markdown export, light/dark/system theme, `/health` + `/metrics`, auto-picks a free port if 8080 is busy. `pip install 'cheetahclaws[web]'`. |
 
 ---
 
@@ -910,12 +948,97 @@ US stocks (`AAPL`), HK stocks (`0700.HK`), A-shares (`000001.SZ`), crypto (`BTC`
 
 ---
 
+## Web UI
+
+A production-ready browser interface with real user accounts, SQLite-backed session history, and ops endpoints — bundled Python stdlib HTTP server plus nine small vanilla-JS modules, no Node.js / React / build step.
+
+### Install and start
+
+```bash
+pip install 'cheetahclaws[web]'              # pulls sqlalchemy + passlib + PyJWT
+
+cheetahclaws --web                           # auto-picks a free port (tries 8080 first)
+cheetahclaws --web --port 9000               # bind exactly :9000 (fails loudly if taken)
+cheetahclaws --web --host 0.0.0.0            # open to the local network
+cheetahclaws --web --no-auth                 # skip login (localhost dev only)
+```
+
+On first visit to `http://localhost:<port>/chat`, the UI routes you to a **registration form** — the first account becomes admin. Subsequent visits show **Sign in**. Credentials: bcrypt-hashed password + 7-day JWT cookie (`ccjwt`, HttpOnly, SameSite=Strict). The JWT signing key is persisted to `~/.cheetahclaws/web_secret` so logins survive restarts.
+
+### Chat UI (`/chat`)
+
+| Feature | Details |
+|---------|---------|
+| **Streaming chat** | WebSocket for live prompts + SSE for long-running slash commands |
+| **Persistent history** | Every session + message lives in SQLite (`~/.cheetahclaws/web.db`). Server restart does not lose state. |
+| **Sidebar session management** | Title auto-titled from first user message, relative time ("12m ago"), message count, busy dot, client-side search, right-click menu (Rename / Export Markdown / Delete) |
+| **Cross-user isolation** | Each user only sees their own sessions — enforced at DB query and in-memory cache |
+| **Tool cards** | Collapsible cards show tool name, inputs, outputs, status (running / done / denied) |
+| **Permission approval** | Inline Allow / Deny buttons |
+| **45+ slash commands** | `/status`, `/model`, `/brainstorm`, `/ssj`, `/plan`, `/telegram`, `/wechat`, `/slack`, `/voice`, `/image`, etc. |
+| **Settings panel** | Model picker (11 providers), permission mode, thinking/verbose toggles, per-provider API key entry, quick-action buttons |
+| **Theme** | Light default, `@media (prefers-color-scheme: dark)` follows the OS automatically. Toggle cycles **system → light → dark → system**; choice stored in localStorage, no flash-of-wrong-theme on first paint |
+| **Feature dashboard** | Welcome screen with 4×6 clickable cards — Core, Agent Features, Session & Memory, Multi-Model, Development Tools, Bridges, Multi-Modal Media |
+| **Export as Markdown** | `GET /api/sessions/{id}/export` downloads the conversation with all tool calls |
+| **Favicon** | Leaping-cheetah icon served at `/favicon.ico` and `/static/favicon.png` |
+
+### PTY Terminal (`/`)
+
+Full xterm.js terminal — still there, still 100% CLI parity. Uses the same one-time generated password (printed on startup) — separate from the chat JWT flow.
+
+### API shape
+
+```
+Browser ──→ /chat                ──→ 9 JS modules load from /static/js/*.js
+        ──→ /api/auth/login      ──→ bcrypt + JWT cookie
+        ──→ /api/prompt (POST)   ──→ persists to SQLite, fans events out
+        ──→ /api/events (WS)     ──→ real-time text_chunk / tool_* / permission_*
+        ──→ /api/sessions/*      ──→ list / get / rename / delete / export
+
+        ──→ /                     ──→ xterm.js PTY (password-gated)
+        ──→ /health               ──→ { ok, db, uptime_s }        (unauthenticated)
+        ──→ /metrics              ──→ Prometheus text              (unauthenticated)
+```
+
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| `/api/auth/bootstrap` | GET | Any users registered yet? |
+| `/api/auth/register` | POST | Create user (first one is admin) |
+| `/api/auth/login` | POST | Verify bcrypt + issue JWT cookie |
+| `/api/auth/logout` | POST | Clear cookie |
+| `/api/auth/whoami` | GET | Current user |
+| `/api/prompt` | POST | Submit prompt / slash command (inline JSON or SSE for long commands) |
+| `/api/events` | WS | Structured event stream for a session |
+| `/api/approve` | POST | Respond to a permission request |
+| `/api/sessions` | GET | List this user's sessions |
+| `/api/sessions/{id}` | GET / PATCH / DELETE | Detail / rename / remove |
+| `/api/sessions/{id}/export` | GET | Download conversation as Markdown |
+| `/api/config` | GET / PATCH | Read or update session config |
+| `/api/models` | GET | Providers + models + API-key status |
+| `/health` | GET | Liveness + DB probe |
+| `/metrics` | GET | Prometheus counters (`requests_total`, `auth_logins_failed`, `users_total`, ...) |
+
+### Observability
+
+- **Structured logs** — one JSON line per HTTP response on stderr, e.g.
+  ```json
+  {"ts":1776368300.054,"level":"info","logger":"web.server","msg":"req","method":"POST","path":"/api/prompt","status":200,"dur_ms":650,"user_id":1}
+  ```
+  Tune with `CHEETAHCLAWS_LOG_LEVEL=DEBUG|INFO|WARNING`.
+- **Metrics** — point Prometheus at `/metrics`. Counters increment inside `_send_http` and the auth routes.
+- **Tests** — `pytest tests/test_web_api.py` runs 21 end-to-end HTTP tests against a real server in ~5 seconds (no mocks, real SQLite, real bcrypt, real JWT).
+
+> **Full guide:** [docs/guides/web-ui.md](docs/guides/web-ui.md)
+
+---
+
 ## Documentation
 
 Detailed guides have been moved to [`docs/guides/`](docs/guides/) to keep this README focused. Click any link below:
 
 | Guide | What's Inside |
 |-------|---------------|
+| [**Web UI**](docs/guides/web-ui.md) | Chat UI, PTY terminal, API endpoints, settings panel, model switching, dark/light theme, SSE streaming, session management, authentication |
 | [**Reference**](docs/guides/reference.md) | CLI, 36+ commands, 33 built-in tools (incl. WebBrowse, ReadEmail, SendEmail, ReadPDF, ReadImage, ReadSpreadsheet), session search, auxiliary model, error classification, prompt injection detection, tool cache, parallel tools |
 | [**Extensions**](docs/guides/extensions.md) | Memory system, Skills, Sub-Agents, MCP servers, Plugin system, Monitor subscriptions, Autonomous Agents |
 | [**Bridges**](docs/guides/bridges.md) | Telegram, WeChat, Slack setup and remote control from your phone |
@@ -940,6 +1063,10 @@ Options:
   --accept-all         Auto-approve all operations (no permission prompts)
   --verbose            Show thinking blocks and per-turn token counts
   --thinking           Enable Extended Thinking (Claude only)
+  --web                Start web server (Chat UI + PTY terminal in browser)
+  --port PORT          Web server port (default: 8080)
+  --host HOST          Web server host (default: 127.0.0.1)
+  --no-auth            Disable web password (local use only)
   --version            Print version and exit
   -h, --help           Show help
 ```
@@ -963,6 +1090,10 @@ cheetahclaws --accept-all --print "Initialize a Python project with pyproject.to
 
 # Debug mode (see tokens + thinking)
 cheetahclaws --thinking --verbose
+
+# Web UI (browser-based chat + terminal)
+cheetahclaws --web
+cheetahclaws --web --port 8008 --no-auth
 ```
 
 See [Reference Guide](docs/guides/reference.md) for the full list of 36+ slash commands, tool descriptions, and configuration options.
