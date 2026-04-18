@@ -468,13 +468,13 @@ class ThinkingChunk:
 class AssistantTurn:
     """Completed assistant turn with text + tool_calls."""
     def __init__(self, text, tool_calls, in_tokens, out_tokens,
-                 cache_read_tokens=0, cache_creation_tokens=0):
+                 cache_read_tokens=0, cache_write_tokens=0):
         self.text                 = text
         self.tool_calls           = tool_calls   # list of {id, name, input}
         self.in_tokens            = in_tokens
         self.out_tokens           = out_tokens
         self.cache_read_tokens    = cache_read_tokens
-        self.cache_creation_tokens = cache_creation_tokens
+        self.cache_write_tokens = cache_write_tokens
 
 
 def stream_anthropic(
@@ -532,7 +532,7 @@ def stream_anthropic(
             final.usage.input_tokens,
             final.usage.output_tokens,
             cache_read_tokens=getattr(final.usage, "cache_read_input_tokens", 0) or 0,
-            cache_creation_tokens=getattr(final.usage, "cache_creation_input_tokens", 0) or 0,
+            cache_write_tokens=getattr(final.usage, "cache_creation_input_tokens", 0) or 0,
         )
 
 
@@ -589,7 +589,7 @@ def stream_openai_compat(
     text          = ""
     tool_buf: dict = {}   # index → {id, name, args_str}
     in_tok = out_tok = 0
-    cache_read_tok = cache_creation_tok = 0
+    cache_read_tok = cache_write_tok = 0
 
     stream = client.chat.completions.create(**kwargs)
     for chunk in stream:
@@ -647,7 +647,7 @@ def stream_openai_compat(
             tc_entry["extra_content"] = v["extra_content"]
         tool_calls.append(tc_entry)
 
-    yield AssistantTurn(text, tool_calls, in_tok, out_tok, cache_read_tok, cache_creation_tok)
+    yield AssistantTurn(text, tool_calls, in_tok, out_tok, cache_read_tok, cache_write_tok)
 
 
 def stream_ollama(
@@ -762,7 +762,7 @@ def stream_ollama(
 
     # Ollama doesn't return exact token counts via livestream easily until "done",
     # but we can do a rough estimate or 0, cheetahclaws handles zero gracefully
-    yield AssistantTurn(text, tool_calls, 0, 0)
+    yield AssistantTurn(text, tool_calls, 0, 0, 0, 0)
 
 
 def stream(
@@ -835,7 +835,9 @@ def stream(
                 breaker.record_success()
                 _log.info("api_call_done", session_id=session_id,
                           provider=provider_name, model=model_name,
-                          in_tokens=event.in_tokens, out_tokens=event.out_tokens)
+                          in_tokens=event.in_tokens, out_tokens=event.out_tokens,
+                          cache_read_tokens=getattr(event, 'cache_read_tokens', 0),
+                          cache_write_tokens=getattr(event, 'cache_write_tokens', 0))
             yield event
     except Exception as exc:
         breaker.record_failure()
