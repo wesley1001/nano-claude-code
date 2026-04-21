@@ -39,6 +39,47 @@ cheetahclaws        # start chatting!
 
 Other install methods: [pip install](#alternative-install-with-pip) | [uv install](#alternative-install-with-uv) | [run from source](#alternative-run-directly-from-source-no-install) | [full details](#installation)
 
+
+ 
+
+
+ 
+## 🔥🔥🔥 News (Pacific Time)
+
+ 
+- Apr 20, 2026 (**v3.05.76**): **Research pipeline — 20 sources across academia/tech/finance/social/web + cross-platform attention heat table, publication trend sparkline, notable-citer analysis, entity extraction, multi-query expansion, side-by-side compare, saved reports, weekly trend tracking via `/monitor`, one-click `/ssj` wizard. Also including Chinese platforms: Zhihu (知乎) · Bilibili (B站) · Weibo (微博) · Rednote (小红书).**
+- Apr 18, 2026 (**v3.05.75**): **External plugin discovery via `CHEETAHCLAWS_PLUGIN_PATH` + safer dependency management; tool-history integrity fix for OpenAI-compatible providers (DeepSeek et al.); end-to-end prompt-cache token tracking across providers with full checkpoint round-trip**
+- Apr 16, 2026 (**v3.05.74**): **Web UI production hardening — persistence, multi-user auth, ops endpoints, JS module split, pytest suite**
+  
+ 
+For more news, see [here](https://github.com/SafeRL-Lab/cheetahclaws/blob/main/docs/news.md)
+
+
+---
+
+# CheetahClaws
+
+CheetahClaws: **A Lightweight** and **Easy-to-Use** Python Reimplementation of Claude Code **Supporting Any Model**, such as Claude, GPT, Gemini, Kimi, Qwen, Zhipu, DeepSeek, MiniMax, and local open-source models via Ollama or any OpenAI-compatible endpoint.
+
+---
+
+## Content
+  * [Why CheetahClaws](#why-cheetahclaws)
+  * [CheetahClaws vs OpenClaw](#cheetahclaws-vs-openclaw)
+  * [Features](#features)
+  * [Supported Models](#supported-models)
+  * [Installation](#installation)
+  * [Usage: Closed-Source API Models](#usage-closed-source-api-models)
+  * [Usage: Open-Source Models (Local)](#usage-open-source-models-local)
+  * [Model Name Format](#model-name-format)
+  * [Trading Agent](#trading-agent) (multi-agent analysis, backtesting, memory)
+  * [Web UI](#web-ui) (chat interface, settings, API endpoints)
+  * [Documentation](#documentation) (guides for all features)
+  * [Contributing](#contributing)
+  * [FAQ](#faq)
+  * [Citation](#citation)
+
+
 ### Demos
  <div align=center>
  <img src="https://github.com/SafeRL-Lab/clawspring/blob/main/docs/demo.gif" width="850"/> 
@@ -125,46 +166,6 @@ Other install methods: [pip install](#alternative-install-with-pip) | [uv instal
  </div>
 
 ---
- 
-
-
- 
-## 🔥🔥🔥 News (Pacific Time)
-
- 
-- Apr 20, 2026 (**v3.05.76**): **Research pipeline — 20 sources across academia/tech/finance/social/web + cross-platform attention heat table, publication trend sparkline, notable-citer analysis, entity extraction, multi-query expansion, side-by-side compare, saved reports, weekly trend tracking via `/monitor`, one-click `/ssj` wizard. Also including Chinese platforms: Zhihu (知乎) · Bilibili (B站) · Weibo (微博) · Rednote (小红书).**
-- Apr 18, 2026 (**v3.05.75**): **External plugin discovery via `CHEETAHCLAWS_PLUGIN_PATH` + safer dependency management; tool-history integrity fix for OpenAI-compatible providers (DeepSeek et al.); end-to-end prompt-cache token tracking across providers with full checkpoint round-trip**
-- Apr 16, 2026 (**v3.05.74**): **Web UI production hardening — persistence, multi-user auth, ops endpoints, JS module split, pytest suite**
-  
- 
-For more news, see [here](https://github.com/SafeRL-Lab/cheetahclaws/blob/main/docs/news.md)
-
-
----
-
-# CheetahClaws
-
-CheetahClaws: **A Lightweight** and **Easy-to-Use** Python Reimplementation of Claude Code **Supporting Any Model**, such as Claude, GPT, Gemini, Kimi, Qwen, Zhipu, DeepSeek, MiniMax, and local open-source models via Ollama or any OpenAI-compatible endpoint.
-
----
-
-## Content
-  * [Why CheetahClaws](#why-cheetahclaws)
-  * [CheetahClaws vs OpenClaw](#cheetahclaws-vs-openclaw)
-  * [Features](#features)
-  * [Supported Models](#supported-models)
-  * [Installation](#installation)
-  * [Usage: Closed-Source API Models](#usage-closed-source-api-models)
-  * [Usage: Open-Source Models (Local)](#usage-open-source-models-local)
-  * [Model Name Format](#model-name-format)
-  * [Trading Agent](#trading-agent) (multi-agent analysis, backtesting, memory)
-  * [Web UI](#web-ui) (chat interface, settings, API endpoints)
-  * [Documentation](#documentation) (guides for all features)
-  * [Contributing](#contributing)
-  * [FAQ](#faq)
-  * [Citation](#citation)
-
-
 
 
 ## Why CheetahClaws
