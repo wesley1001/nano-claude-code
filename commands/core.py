@@ -538,9 +538,15 @@ def run_setup_wizard(config: dict) -> None:
         config["model"] = chosen_pname + "/default"
 
     # ── Step 3: Set API key (if needed) ──
-    env_var = prov.get("api_key_env", "")
+    # `or ""` (not just .get(..., "")) is load-bearing: ollama / lmstudio
+    # entries in PROVIDERS have ``api_key_env: None``, and dict.get returns
+    # the stored None — not the default — when the key is present.  Passing
+    # None into os.environ.get raises TypeError ("str expected, not NoneType")
+    # because os.environ fsencodes its keys.  See issue #59.
+    env_var   = prov.get("api_key_env") or ""
     key_field = f"{chosen_pname}_api_key"
-    existing_key = os.environ.get(env_var, "") or config.get(key_field, "")
+    existing_key = (os.environ.get(env_var, "") if env_var else "") \
+                   or config.get(key_field, "")
 
     if chosen_pname not in ("ollama", "lmstudio"):
         if existing_key:

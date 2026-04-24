@@ -1369,13 +1369,20 @@ def test_expand_subqueries_parses_model_lines(monkeypatch):
     fake_providers.stream = fake_stream
     fake_providers.TextChunk = FakeTextChunk
     fake_providers.AssistantTurn = FakeAssistantTurn
+    # Save the real module (if loaded) and restore it on exit so we don't
+    # leak the stub into later tests.  Previously this finally was a no-op,
+    # which broke tests/test_setup_wizard.py and any other suite that ran
+    # after this one and tried `from providers import PROVIDERS`.
+    real_providers = sys.modules.get("providers")
     sys.modules["providers"] = fake_providers
     try:
         out = aggregator._expand_subqueries("frontier LLM benchmarks", 4,
                                             config={"model": "test"})
     finally:
-        # Best-effort restore — some tests earlier may have set a real providers
-        pass
+        if real_providers is not None:
+            sys.modules["providers"] = real_providers
+        else:
+            sys.modules.pop("providers", None)
 
     assert len(out) == 4
     assert all(5 < len(ln) < 150 for ln in out)
