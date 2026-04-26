@@ -3,7 +3,7 @@
 
 > **CheetahClaws is becoming a secure, multi-model agent runtime that engineering and research teams trust to actually run on their CI, repos, and experiments.**
 
-This roadmap is the third iteration. It supersedes `ROADMAP.md` (v1, vision-heavy) and `ROADMAP_enhanced.md` (v2, scope-heavy). The job of v3 is to **cut**, **sequence**, and **anchor in time** — so the team can ship something users pay for.
+
 
 ---
 
